@@ -12,216 +12,154 @@ let files = {
         }, ctx)
 
         console.log('fileAttributes', fileAttributesList)
+
         let fieldAttribVals = fileAttributesList ? fileAttributesList[0] : {}
         PlatformApi.IafScriptEngine.setVar('iaf_ext_fileAttributes', fieldAttribVals)
-        PlatformApi.IafScriptEngine.setVar('iaf_attributeDisplayNames', [
-            { prop: "documentCode", dName: "Document code" },
-            { prop: "drawingType", dName: "Drawing Type" },
-            { prop: "discipline", dName: "Discipline" },
-            { prop: "component", dName: "Component" },
-            { prop: "contractor", dName: "Contractor" },
-            { prop: "drawingStage", dName: "Drawing Stage" },
-            { prop: "location", dName: "Location" },
-            { prop: "package", dName: "Package" },
-            { prop: "handoverType", dName: "Handover Type" },
-            { prop: "system", dName: "System" },
-            { prop: "systemName", dName: "System Name" },
-            { prop: "handoverPackNumber", dName: "Handover Pack Number" },
-            { prop: "stage", dName: "Stage" },
-            { prop: "documentType", dName: "Document Type" },
-            { prop: "description", dName: "Description" },
-            { prop: "fileType", dName: "File Type" },
-            { prop: "subLocation", dName: "Sub Location" },
-            { prop: "spec", dName: "Spec" },
-            { prop: "size", dName: "Size" },
-            { prop: "fluidType", dName: "Fluid Type" },
-            { prop: "transmittalNo", dName: "Transmittal No" },
-            { prop: "drawingDiscipline", dName: "Drawing Discipline" },
-            { prop: "drawingSubType", dName: "Drawing Sub Type" },
-            { prop: "revision", dName: "Revision" },
-            { prop: "trackedDrawing", dName: "Tracked Drawing" },
-        ])
-    },
 
-    async getDocumentCodes(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let distinctCodes = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.documentCode",
-            query: {}
-        }, ctx)
-        console.log(distinctCodes, "distinctCodes")
-        let distinctCodesFilter = distinctCodes.filter(attval => attval != "")
-        console.log(distinctCodesFilter, "distinctCodesFilter")
-        let distinctCodesSorted = _.sortBy(distinctCodesFilter, a => a)
-        console.log(distinctCodesSorted, "distinctCodesSorted")
-        let scriptValues = { "Document Code": distinctCodesSorted }
-        return scriptValues
-    },
+        console.log('fieldAttribVals', fieldAttribVals)
 
+        var attributeKeys = Object.entries(fieldAttribVals).map(([key, value]) => ({ key, value }));
 
-    async getDrawingTypes(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Drawing Type": iaf_ext_fileAttributes.drawingType }
-        return scriptValues
-    },
-    async getDisciplines(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Discipline: iaf_ext_fileAttributes.discipline }
-        return scriptValues
-    },
-    async getComponents(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Component: iaf_ext_fileAttributes.component }
-        return scriptValues
-    },
+        console.log('attrKeys', attributeKeys)
 
-    async getContractors(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Contractor: iaf_ext_fileAttributes.contractor }
-        return scriptValues
-    },
+        let props = []
 
-    async getDrawingStages(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Drawing Stage": iaf_ext_fileAttributes.drawingStage }
-        return scriptValues
-    },
-    async getLocations(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Location: iaf_ext_fileAttributes.location }
-        return scriptValues
-    },
-    async getPackages(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Package: iaf_ext_fileAttributes.package }
-        return scriptValues
-    },
-    async getHandoverTypes(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Handover Type": iaf_ext_fileAttributes.handoverType }
-        return scriptValues
-    },
-    async getSystems(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { System: iaf_ext_fileAttributes.system }
-        return scriptValues
-    },
-    async getSystemsNames(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "System Name": iaf_ext_fileAttributes.systemName }
-        return scriptValues
-    },
-    async getHandoverPackNumbers(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let distinctPackNumbers = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.handoverPackNumber",
-            query: {}
-        }, ctx)
-        console.log(distinctPackNumbers, "distinctPackNumbers")
-
-        distinctPackNumbers = distinctPackNumbers.filter(attval => attval != "")
-        console.log(distinctPackNumbers, "distinctPackNumbers after filter")
-
-        distinctPackNumbers = _.sortBy(distinctPackNumbers, a => a)
-        console.log(distinctPackNumbers, "distinctPackNumbers after sorted")
-        let scriptValues = {
-            "Handover Pack Number": distinctPackNumbers
+        for (var i = 0; i < attributeKeys.length; i++) {
+            props.push({ prop: attributeKeys[i].key, dName: attributeKeys[i].key });
         }
-        return scriptValues
+
+        PlatformApi.IafScriptEngine.setVar('iaf_attributeDisplayNames', props)
     },
-    async getStages(input, libraries, ctx) {
+    async getFileAttributeSelects(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        console.log("iaf_ext_files_coll", iaf_ext_files_coll)
+        let distinctOriginators = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
+            field: "fileAttributes.Originator",
+            query: {}
+        }, ctx)
+        console.log('distinctOriginators', distinctOriginators)
+        distinctOriginators = distinctOriginators.filter(attval => attval != '')
+        console.log('distinctOriginators2', distinctOriginators)
+        distinctOriginators = _.sortBy(distinctOriginators, a => a)
+        console.log('distinctOriginators3', distinctOriginators)
+        let distinctLevels = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
+            field: "fileAttributes.Levels And Locations",
+            query: {}
+        }, ctx)
+        console.log('distinctLevels', distinctLevels)
+        distinctLevels = distinctLevels.filter(attval => attval)
+        console.log('distinctLevels2', distinctLevels)
+        distinctLevels = _.sortBy(distinctLevels, a => a)
+        console.log('distinctDocTypes3', distinctLevels)
+        let distinctFileTypes = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
+            field: "fileAttributes.File Type",
+            query: {}
+        }, ctx)
+        console.log('distinctFileTypes', distinctFileTypes)
+        distinctFileTypes = distinctFileTypes.filter(attval => attval)
+        console.log('distinctFileTypes2', distinctFileTypes)
+        distinctFileTypes = _.sortBy(distinctFileTypes, a => a)
+        console.log('distinctFileTypes3', distinctFileTypes)
+        let scriptedSelectProps = {
+            Originator: distinctOriginators,
+            "Levels And Locations": distinctLevels,
+            "File Type": distinctFileTypes
+        }
+        return scriptedSelectProps
+    },
+    async getFiles(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let fileItems = await PlatformApi.IafScriptEngine.getFileItems(
+            {
+                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
+                query: { ...input.entityInfo, "isArchieve": { $ne: true } },
+                options: { page: { getAllItems: true } }
+            }, ctx
+        )
+        console.log('fileItems', fileItems)
+        let propDispNames = PlatformApi.IafScriptEngine.getVar('iaf_attributeDisplayNames')
+        let filesAsEntities = fileItems.map(file => {
+            let filePropNamesOrig = Object.keys(file.fileAttributes)
+            let fileProps = {}
+            for (let i = 0; i < filePropNamesOrig.length; i++) {
+                let filePropInfo = _.find(propDispNames, { prop: filePropNamesOrig[i] })
+                if (filePropInfo)
+                    fileProps[filePropInfo.dName] = {
+                        dName: filePropInfo.dName,
+                        type: filePropNamesOrig[i] === 'dtCategory' || filePropNamesOrig[i] === 'dtType' ? '<HIERARCHY>' : 'text',
+                        val: file.fileAttributes[filePropNamesOrig[i]] || null
+                    }
+            }
+
+            return {
+                _id: file._id,
+                _fileId: file._fileId,
+                ...file,
+                "Entity Name": file.name,
+                properties: fileProps
+            }
+        })
+        console.log('fileAsEntities', filesAsEntities)
+        return filesAsEntities
+    },
+    async getComments(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Stage: iaf_ext_fileAttributes.stage }
+        let scriptValues = { Comment: iaf_ext_fileAttributes.Comment }
+        return scriptValues
+    },
+    async getOriginators(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        let scriptValues = { Originator: iaf_ext_fileAttributes.Originator }
+        return scriptValues
+    },
+    async getBuildings(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        let scriptValues = { Building: iaf_ext_fileAttributes.Building }
+        return scriptValues
+    },
+    async getLevelsAndLocations(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        let scriptValues = { 'Levels And Locations': iaf_ext_fileAttributes['Levels And Locations'] }
         return scriptValues
     },
     async getDocumentTypes(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Document Type": iaf_ext_fileAttributes.documentType }
+        let scriptValues = { 'Document Type': iaf_ext_fileAttributes['Document Type'] }
         return scriptValues
     },
-
-    async getDescriptions(input, libraries, ctx) {
+    async getFileDisciplines(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        let scriptValues = { 'File Discipline': iaf_ext_fileAttributes['File Discipline'] }
+        return scriptValues
+    },
+    async getManufacturers(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let distinctContacts = await PlatformApi.IafScriptEngine.getDistinct({
+        let distinctManu = await PlatformApi.IafScriptEngine.getDistinct({
             collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.description",
+            field: 'fileAttributes.Manufacturer',
             query: {}
         }, ctx)
-        let distinctContactsFilter = distinctContacts.filter(attval => attval != "")
-        let distinctContactsSorted = _.sortBy(distinctContactsFilter, a => a)
-        let scriptValues = { Description: distinctContactsSorted }
+        distinctManu = _.filter(distinctManu, attval => attval != "")
+        let sortedManu = _.sortBy(distinctManu, rev => rev.name)
+        let scriptValues = { Manufacturer: sortedManu }
         return scriptValues
     },
     async getFileTypes(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "File Type": iaf_ext_fileAttributes.fileType }
-        return scriptValues
-    },
-    async getSubLocations(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Sub Location": iaf_ext_fileAttributes.subLocation }
-        return scriptValues
-    },
-    async getSpecs(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Spec: iaf_ext_fileAttributes.spec }
-        return scriptValues
-    },
-    async getSizes(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Size: iaf_ext_fileAttributes.size }
-        return scriptValues
-    },
-    async getFluidTypes(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Fluid Type": iaf_ext_fileAttributes.fluidType }
-        return scriptValues
-    },
-    async getTransmittalNos(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let distinctContacts = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.transmittalNo",
-            query: {}
-        }, ctx)
-        let distinctContactsFilter = distinctContacts.filter(attval => attval != "")
-        let distinctContactsSorted = _.sortBy(distinctContactsFilter, a => a)
-        let scriptValues = { "Transmittal No": distinctContactsSorted }
-        return scriptValues
-    },
-    async getDrawingDisciplines(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Drawing Discipline": iaf_ext_fileAttributes.drawingDiscipline }
-        return scriptValues
-    },
-    async getDrawingSubTypes(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Drawing Sub Type": iaf_ext_fileAttributes.drawingSubType }
+        let scriptValues = { 'File Type': iaf_ext_fileAttributes['File Type'] }
         return scriptValues
     },
     async getRevisions(input, libraries, ctx) {
@@ -229,35 +167,31 @@ let files = {
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
         let distinctRevision = await PlatformApi.IafScriptEngine.getDistinct({
             collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.revision",
+            field: 'fileAttributes.Revision',
             query: {}
         }, ctx)
-
-        distinctRevision = distinctRevision.filter(attval => attval != "")
-
-        distinctRevision = _.sortBy(distinctRevision, a => a)
-
-        let scriptValues = { Revision: distinctRevision }
+        distinctRevision = _.filter(distinctRevision, attval => attval != "")
+        let sortedRevision = _.sortBy(distinctRevision, rev => rev.name)
+        let scriptValues = { Revision: sortedRevision }
         return scriptValues
     },
-
-    async getTrackedDrawing(input, libraries, ctx) {
+    async getStageDescriptions(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Tracked Drawing": iaf_ext_fileAttributes.trackedDrawing }
+        let scriptValues = { 'Stage Description': iaf_ext_fileAttributes['Stage Description'] }
         return scriptValues
     },
-
     async getCategoryOfFiles(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+
+        console.log('getCategoryOfFiles INPUT', input)
         let distinctFileCategories = await PlatformApi.IafScriptEngine.getDistinct({
             collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.dtCategory",
+            field: 'fileAttributes.dtCategory',
             query: {}
         }, ctx)
-        console.log('distinctFileCategories', distinctFileCategories)
-        let sortedCategories = _.sortBy(distinctFileCategories, name => name)
+        let sortedCategories = _.sortBy(distinctFileCategories, rev => rev.name)
         return sortedCategories
     },
     async getTypesOfFilesForCategory(input, libraries, ctx) {
@@ -273,190 +207,11 @@ let files = {
         let sortedTypes = _.sortBy(distinctFileTypes, rev => rev.name)
         return sortedTypes
     },
-    async getFileAttributeSelects(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        console.log("iaf_ext_files_coll", iaf_ext_files_coll)
-        let distinctHandoverTypes = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.handoverType",
-            query: {}
-        }, ctx)
-        console.log('distinctHandoverTypes', distinctHandoverTypes)
-
-        distinctHandoverTypes = distinctHandoverTypes.filter(attval => attval != '')
-
-        console.log('distinctHandoverTypes2', distinctHandoverTypes)
-
-        distinctHandoverTypes = _.sortBy(distinctHandoverTypes, a => a)
-        console.log('distinctHandoverTypes3', distinctHandoverTypes)
-
-        let distinctDocTypes = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.documentType",
-            query: {}
-        }, ctx)
-        console.log('distinctDocTypes', distinctDocTypes)
-
-        distinctDocTypes = distinctDocTypes.filter(attval => attval != '')
-        console.log('distinctDocTypes2', distinctDocTypes)
-
-
-        distinctDocTypes = _.sortBy(distinctDocTypes, a => a)
-        console.log('distinctDocTypes3', distinctDocTypes)
-
-
-        let scriptedSelectProps = {
-            "Handover Type": distinctHandoverTypes,
-            "Document Type": distinctDocTypes
-        }
-        return scriptedSelectProps
-    },
-    async getFileAttributePropSelects(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        console.log("iaf_ext_files_coll", iaf_ext_files_coll)
-
-        let distinctDisciplines = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.discipline",
-            query: {}
-        }, ctx)
-        console.log('distinctDisciplines', distinctDisciplines)
-
-        distinctDisciplines = distinctDisciplines.filter(attval => attval != "")
-
-        console.log('distinctDisciplines2', distinctDisciplines)
-
-        distinctDisciplines = _.sortBy(distinctDisciplines, a => a)
-        console.log('distinctDisciplines3', distinctDisciplines)
-
-        let distinctComponents = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.component",
-            query: {}
-        }, ctx)
-        console.log('distinctComponents', distinctComponents)
-
-        distinctComponents = distinctComponents.filter(attval => attval != "")
-        console.log('distinctComponents2', distinctComponents)
-
-
-        distinctComponents = _.sortBy(distinctComponents, a => a)
-        console.log('distinctComponents3', distinctComponents)
-
-
-        let scriptedSelectProps = {
-            Discipline: distinctDisciplines,
-            Component: distinctComponents,
-        }
-        return scriptedSelectProps
-    },
-    async getFileSystemSelects(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let distinctSystems = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: { _userType: iaf_ext_files_coll._userType, _id: iaf_ext_files_coll._id },
-            field: "fileAttributes.system",
-            query: {}
-        }, ctx)
-
-        distinctSystems = distinctSystems.filter(attval => attval != "")
-
-        distinctSystems = _.sortBy(distinctSystems, a => a)
-
-        let scriptValues = { "EIDA System Code": distinctSystems }
-        return scriptValues
-    },
-    async getFiles(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let fileItems = await PlatformApi.IafScriptEngine.getFileItems(
-            {
-                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
-                query: input.entityInfo,
-                options: { page: { getAllItems: true } }
-            }, ctx
-        )
-        console.log('fileItems', fileItems)
-
-        let propDispNames = PlatformApi.IafScriptEngine.getVar('iaf_attributeDisplayNames')
-        console.log(propDispNames, "propDispNames")
-
-        let filesAsEntities = fileItems.map(file => {
-            let filePropNamesOrig = Object.keys(file.fileAttributes)
-            console.log(filePropNamesOrig, "filePropNamesOrig")
-            let fileProps = {}
-            for (let i = 0; i < filePropNamesOrig.length; i++) {
-                let filePropInfo = _.find(propDispNames, { prop: filePropNamesOrig[i] })
-                console.log(filePropInfo, "filePropInfo", filePropInfo?.dName)
-                if (filePropInfo?.dName) {
-                    fileProps[filePropInfo.dName] = {
-                        dName: filePropInfo.dName,
-                        type: filePropNamesOrig[i] === 'dtCategory' || filePropNamesOrig[i] === 'dtType' ? '<HIERARCHY>' : 'text',
-                        val: file.fileAttributes[filePropNamesOrig[i]] || null
-                    }
-                }
-            }
-
-            return {
-                _id: file._id,
-                _fileId: file._fileId,
-                ...file,
-                "Entity Name": file.name,
-                properties: fileProps
-            }
-        })
-        console.log('fileAsEntities', filesAsEntities)
-        return filesAsEntities
-    },
-
-    async getDrawings(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let fileItems = await PlatformApi.IafScriptEngine.getFileItems(
-            {
-                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
-                query: input.entityInfo,
-                options: { page: { getAllItems: true } }
-            }, ctx
-        )
-        console.log('fileItems', fileItems)
-
-        let propDispNames = PlatformApi.IafScriptEngine.getVar('iaf_attributeDisplayNames')
-        console.log(propDispNames, "propDispNames")
-
-        let filesAsEntities = fileItems.map(file => {
-            let filePropNamesOrig = Object.keys(file.fileAttributes)
-            console.log(filePropNamesOrig, "filePropNamesOrig")
-            let fileProps = {}
-            for (let i = 0; i < filePropNamesOrig.length; i++) {
-                let filePropInfo = _.find(propDispNames, { prop: filePropNamesOrig[i] })
-                console.log(filePropInfo, "filePropInfo", filePropInfo?.dName)
-                if (filePropInfo?.dName) {
-                    fileProps[filePropInfo.dName] = {
-                        dName: filePropInfo.dName,
-                        type: filePropNamesOrig[i] === 'dtCategory' || filePropNamesOrig[i] === 'dtType' ? '<HIERARCHY>' : 'text',
-                        val: file.fileAttributes[filePropNamesOrig[i]] || null
-                    }
-                }
-            }
-
-            return {
-                _id: file._id,
-                _fileId: file._fileId,
-                ...file,
-                "Entity Name": file.name,
-                properties: fileProps
-            }
-        })
-        console.log('fileAsEntities', filesAsEntities)
-        return filesAsEntities
-    },
-
     async getAssetsForFile(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let iaf_asset_collection = PlatformApi.IafScriptEngine.getVar('iaf_asset_collection')
+        console.log("iaf_asset_collection", iaf_asset_collection)
         console.log('getAssetsForFile INPUT', input)
         let assetQuery = [{
             parent: {
@@ -473,15 +228,17 @@ let files = {
             ]
         }]
         let queryResults = await PlatformApi.IafScriptEngine.findWithRelatedMulti(assetQuery, ctx)
+        console.log("queryResults", queryResults)
         let assets = queryResults[0]._list[0].AssetInfo._list
+        console.log("assets", assets)
         let assetForTheFile
         let finalAssetForTheFile
-        let header = [["Asset Name", "Type MarK", "ItemGUID"]]
+        let header = [["Asset Name", "Mark", "Room Number"]]
         if (assets.length > 0) {
             assetForTheFile = assets.map(asset => [
                 asset['Asset Name'],
-                asset.properties["Type Mark"].val,
-                asset.properties.ItemGUID.val,
+                asset.properties.Mark.val,
+                asset.properties["Room Number"].val
             ])
             finalAssetForTheFile = header.concat(assetForTheFile)
         } else {
@@ -489,43 +246,6 @@ let files = {
         }
         return finalAssetForTheFile
     },
-    async getSpacesForFile(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let iaf_space_collection = await PlatformApi.IafScriptEngine.getVar('iaf_space_collection')
-        console.log('getSpacesForFile input', input)
-        let spaceQuery = [{
-            parent: {
-                query: { _id: input.entityInfo._id },
-                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
-                options: { page: { getAllItems: true } },
-                sort: { _id: 1 }
-            },
-            related: [
-                {
-                    relatedDesc: { _relatedUserType: iaf_space_collection._userType, _isInverse: true },
-                    as: 'SpaceInfo',
-                }
-            ]
-        }]
-        let queryResults = await PlatformApi.IafScriptEngine.findWithRelatedMulti(spaceQuery, ctx)
-        let spaces = queryResults[0]._list[0].SpaceInfo._list
-        let spaceForTheFile
-        let finalSpaceForTheFile
-        let header = ["Space Name", "Room Number", "Room Type"]
-        if (spaces.length > 0) {
-            spaceForTheFile = spaces.map(space => [
-                space['Space Name'],
-                space.properties['Room Number'].val,
-                space.properties['Room Type'].val
-            ])
-            finalSpaceForTheFile = header.concat(spaceForTheFile)
-        } else {
-            finalSpaceForTheFile = []
-        }
-        return finalSpaceForTheFile
-    },
-
     async editFile(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
@@ -574,7 +294,7 @@ let files = {
 
         let updatedFileItem = [{
             _id: input.entityInfo.new._id,
-            name: input.entityInfo.new.name,
+            name: input.entityInfo.new['Entity Name'],
             fileAttributes: Object.assign(arr2obj(propArrays)),
             _fileId: input.entityInfo.new._fileId,
             containerPath: input.entityInfo.new.containerPath,
@@ -600,6 +320,18 @@ let files = {
             }
         }
         return res
+    },
+    async downloadFileUploadReport(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let IAF_workspace = await PlatformApi.IafScriptEngine.getVar('IAF_workspace')
+        console.log('getAssetsForFile INPUT', input)
+        let sheetArrays = [{ sheetName: "Uploaded Files", arrays: input.tableRows }]
+        let workbook = await UiUtils.IafDataPlugin.createWorkbookFromAoA(sheetArrays)
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook({
+            workbook: workbook,
+            file: `${IAF_workspace._shortName}_UploadedFiles.xlsx`
+        });
+        return savedWorkbook
     },
     async preprocessUploadFiles(input, libraries, ctx) {
         let { PlatformApi } = libraries
@@ -650,13 +382,85 @@ let files = {
         }, ctx);
         return { success: true }
     },
+    async getCollectionsForDocument(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let iaf_collections = PlatformApi.IafScriptEngine.getVar('iaf_collections')
+        let collQuery = [{
+            parent: {
+                query: { _id: input.entityInfo._id },
+                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
+                options: { page: { getAllItems: true } },
+                sort: { _id: 1 }
+            },
+            related: [
+                {
+                    relatedDesc: { _relatedUserType: iaf_collections._userType, _isInverse: true },
+                    as: 'documentCollections'
+                }
+            ]
+        }]
+        let queryResults = await PlatformApi.IafScriptEngine.findWithRelatedMulti(collQuery, ctx)
+        console.log("getCollectionsForDocument-queryResults", queryResults)
+        let collections = queryResults[0]._list[0].documentCollections._list
+        console.log("getCollectionsForDocument-collections", collections)
+        let collectionForTheFile
+        let finalCollectionForTheFile
+        let header = [["Name", "Type"]]
+        if (collections.length > 0) {
+            collectionForTheFile = collections.map(coll => [
+                coll['Collection Name'],
+                coll.properties.Type.val,
+            ])
+            console.log("collectionForTheFile", collectionForTheFile)
+            finalCollectionForTheFile = header.concat(collectionForTheFile)
+        } else {
+            finalCollectionForTheFile = []
+        }
+        return finalCollectionForTheFile
+    },
+    async getSpacesForFile(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let iaf_space_collection = await PlatformApi.IafScriptEngine.getVar('iaf_space_collection')
+        console.log("iaf_space_collection", iaf_space_collection)
+        console.log('getSpacesForFile input', input)
+        let spaceQuery = [{
+            parent: {
+                query: { _id: input.entityInfo._id },
+                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
+                options: { page: { getAllItems: true } },
+                sort: { _id: 1 }
+            },
+            related: [
+                {
+                    relatedDesc: { _relatedUserType: iaf_space_collection._userType, _isInverse: true },
+                    as: 'SpaceInfo',
+                    options: { page: { getAllItems: true } },
+                }
+            ]
+        }]
+        let queryResults = await PlatformApi.IafScriptEngine.findWithRelatedMulti(spaceQuery, ctx)
+        console.log("queryResults", queryResults)
+        let spaces = queryResults[0]._list[0].SpaceInfo._list
+        console.log("spaces", spaces)
+        let spaceForTheFile
+        let finalSpaceForTheFile
+        let header = [["Space Name", "Level", "Name"]]
+        if (spaces.length > 0) {
+            spaceForTheFile = spaces.map(space => [
+                space['Space Name'],
+                space.properties.Floor.val,
+                space.properties.name.val
+            ])
+            finalSpaceForTheFile = header.concat(spaceForTheFile)
+        } else {
+            finalSpaceForTheFile = []
+        }
+        return finalSpaceForTheFile
+    },
     async deleteDocument(input, libraries, ctx) {
         let { PlatformApi } = libraries
-        let res = {
-            success: true,
-            message: "",
-            result: []
-        }
 
         console.log("input.entityInfo.original", input.entityInfo.original)
 
@@ -664,27 +468,94 @@ let files = {
 
         console.log("delete document array", deleteDocumentArray)
 
-        // need to fix 
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
 
-        try {
-            let deleteResult = await PlatformApi.IafScriptEngine.deleteItems({
-                _userItemId: iaf_ext_files_coll._userItemId,
-                items: deleteDocumentArray
-            }, ctx)
-        }
-        catch (e) {
-            return { sucess: false, message: e.message }
-        }
+        console.log("iaf_ext_files_coll", iaf_ext_files_coll)
+        let deleteResult = await PlatformApi.IafScriptEngine.deleteItems({
+            _userItemId: iaf_ext_files_coll._userItemId,
+            items: deleteDocumentArray
+        }, ctx)
 
+        let res = { success: true, message: '', result: deleteResult }
         return res
     },
-    async getFileByDocumentTypes(input, libraries, ctx) {
-
+    async archiveFile(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        console.log(input, "input")
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let IAF_workspace = await PlatformApi.IafScriptEngine.getVar('IAF_workspace')
+        let updatedFileItem = [{
+            _id: input.entityInfo.new._id,
+            name: input.entityInfo.new.name,
+            fileAttributes: input.entityInfo.new.fileAttributes,
+            _fileId: input.entityInfo.new._fileId,
+            containerPath: input.entityInfo.new.containerPath,
+            nextVersionNumber: input.entityInfo.new.nextVersionNumber,
+            tipVersionNumber: input.entityInfo.new.tipVersionNumber,
+            versions: input.entityInfo.new.version,
+            isArchieve: true
+        }]
+        let updateItemResult = await PlatformApi.IafScriptEngine.updateItemsBulk({
+            _userItemId: iaf_ext_files_coll._userItemId,
+            _namespaces: IAF_workspace._namespaces,
+            items: updatedFileItem
+        }, ctx);
+        let res
+        if (updateItemResult[0][0] === "ok: 204") {
+            res = {
+                success: true,
+                result: updateItemResult[0][0]
+            }
+        } else {
+            res = {
+                success: false,
+                message: "Error updating File!"
+            }
+        }
+        return res
+    },
+    async unArchiveFile(input, libraries, ctx) {
+        let { PlatformApi } = libraries
+        console.log(input, "input")
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let IAF_workspace = await PlatformApi.IafScriptEngine.getVar('IAF_workspace')
+        let updatedFileItem = [{
+            _id: input.entityInfo.new._id,
+            name: input.entityInfo.new.name,
+            fileAttributes: input.entityInfo.new.fileAttributes,
+            _fileId: input.entityInfo.new._fileId,
+            containerPath: input.entityInfo.new.containerPath,
+            nextVersionNumber: input.entityInfo.new.nextVersionNumber,
+            tipVersionNumber: input.entityInfo.new.tipVersionNumber,
+            versions: input.entityInfo.new.version,
+            isArchieve: false
+        }]
+        let updateItemResult = await PlatformApi.IafScriptEngine.updateItemsBulk({
+            _userItemId: iaf_ext_files_coll._userItemId,
+            _namespaces: IAF_workspace._namespaces,
+            items: updatedFileItem
+        }, ctx);
+        let res
+        if (updateItemResult[0][0] === "ok: 204") {
+            res = {
+                success: true,
+                result: updateItemResult[0][0]
+            }
+        } else {
+            res = {
+                success: false,
+                message: "Error updating File!"
+            }
+        }
+        return res
+    },
+    async getArchieveFileByTypes(input, libraries, ctx) {
+        console.log("getArchieveFileByTypes")
         let { PlatformApi } = libraries
         let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
 
         let tagArray = Object.keys(input.entityInfo)
+        console.log(tagArray)
         let tagNames = tagArray.map(name => {
             return _.split(name, '-')[2]
         })
@@ -694,7 +565,10 @@ let files = {
                     _userType: iaf_ext_files_coll._userType,
                     _userItemId: iaf_ext_files_coll._userItemId
                 },
-                query: { "fileAttributes.documentType": { $in: tagNames } },
+                query: {
+                    "fileAttributes.Document Type": { $in: tagNames },
+                    "isArchieve": { $eq: true }
+                },
                 options: { page: { getAllItems: true } }
             }, ctx)
         let propDispNames = PlatformApi.IafScriptEngine.getVar('iaf_attributeDisplayNames')
@@ -723,228 +597,6 @@ let files = {
         console.log('fileAsEntities', filesAsEntities)
         return filesAsEntities
     },
-    async exportAllFileList(input, libraries, ctx) {
-        let { PlatformApi, UiUtils } = libraries
-
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        let fileItems = await PlatformApi.IafScriptEngine.getFileItems(
-            {
-                collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
-                options: { page: { getAllItems: true } }
-            }, ctx
-        )
-        console.log('fileItems', fileItems)
-
-        let reduced = fileItems.map(file => {
-            return {
-                Name: file.name,
-                fileTags: Object.assign({}, file.fileAttributes)
-            }
-        })
-
-        console.log("reduced1", reduced)
-
-
-        reduced = reduced.map(data => {
-            return {
-                Name: data.Name,
-                //fileTags: Object.entries(data.fileTags).map(([key, value]) => ({key,value}))
-                fileTags: Object.entries(data.fileTags),
-            }
-        })
-
-        console.log("reduced2", reduced)
-
-        let arrayObject = reduced.map(list => {
-            let arrayTags = list.fileTags.map(tags => {
-                return { [tags[0]]: tags[1] }
-            })
-            return Object.assign({}, { "File Name": list["Name"] }, Object.assign(...arrayTags))
-        })
-
-        console.log("arrayObject", arrayObject)
-
-        let sheetArrays = [{ sheetName: "File List", objects: arrayObject }]
-        console.log('shetArrays', sheetArrays)
-
-        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
-        console.log('relationWorkbook', relationWorkbook)
-
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "File List Exported.xlsx");
-        console.log('savedWorkbook', savedWorkbook)
-
-    },
-    async altGetFilesByDwgDiscipline(input, libraries, ctx) {
-        console.log("input - altGetFilesByDwgDiscipline", input)
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-
-        let tagArray = Object.keys(input.entityInfo)
-        console.log("tagArray", tagArray)
-
-        let disciplines = tagArray.filter(tag => {
-            return _.split(tag, '-')[0] == "0"
-        })
-        console.log("disciplines", disciplines)
-
-        let subTypes = tagArray.filter(tag => {
-            return _.split(tag, '-')[0] == "1"
-        })
-        console.log("subTypes", subTypes)
-
-        let discNames = _.map(disciplines, name => {
-            return name.split('-').slice(2).join('-')
-        })
-        console.log("discNames", discNames)
-
-        let typeNames = _.map(subTypes, name => {
-            return name.split('-').slice(2).join('-')
-        })
-        console.log("typeNames", typeNames)
-
-        let fileItems
-        if (typeNames.length > 0) {
-            fileItems = await PlatformApi.IafScriptEngine.getFileItems(
-                {
-                    query: { "fileAttributes.drawingDiscipline": { $in: discNames }, "fileAttributes.drawingSubType": { $in: typeNames } },
-                    collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
-                    options: { page: { getAllItems: true } },
-                }, ctx)
-        }
-        else {
-            fileItems = await PlatformApi.IafScriptEngine.getFileItems(
-                {
-                    query: { "fileAttributes.drawingDiscipline": { $in: discNames } },
-                    collectionDesc: { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
-                    options: { page: { getAllItems: true } },
-                }, ctx)
-        }
-        let propDispNames = PlatformApi.IafScriptEngine.getVar('iaf_attributeDisplayNames')
-        let filesAsEntities = fileItems.map(file => {
-            let filePropNamesOrig = Object.keys(file.fileAttributes)
-            let fileProps = {}
-            for (let i = 0; i < filePropNamesOrig.length; i++) {
-                let filePropInfo = _.find(propDispNames, { prop: filePropNamesOrig[i] })
-                if (filePropInfo?.dName) {
-                    fileProps[filePropInfo.dName] = {
-                        dName: filePropInfo.dName,
-                        type: filePropNamesOrig[i] === 'drawingDiscipline' || filePropNamesOrig[i] === 'drawingSubType' ? '<HIERARCHY>' : 'text',
-                        val: file.fileAttributes[filePropNamesOrig[i]] || null
-                    }
-                }
-            }
-
-            return {
-                _id: file._id,
-                _fileId: file._fileId,
-                ...file,
-                "Entity Name": file.name,
-                properties: fileProps
-            }
-        })
-        console.log('fileAsEntities', filesAsEntities)
-        return filesAsEntities
-    },
-
-    async getDwgDisciplinesTrackedWithCount(input, libraries, callback, ctx) {
-        console.log("input - getDwgDisciplinesTrackedWithCount", input)
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        console.log("iaf_ext_files_coll", iaf_ext_files_coll)
-        let distinctTypes = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: {
-                _userType: iaf_ext_files_coll._userType,
-                _id: iaf_ext_files_coll._id
-            },
-            field: "fileAttributes.drawingDiscipline",
-            query: {
-                "fileAttributes.trackedDrawing": "Yes"
-            }
-        }, ctx)
-        console.log('distinctTypes', distinctTypes)
-
-        distinctTypes = _.sortBy(distinctTypes, d => d)
-        console.log(distinctTypes, "distinctTypesAfter sorting")
-
-        // Need to check the objects
-        let distinctTypeWithTypeCountQuery = distinctTypes.map(type => {
-            return {
-                _userItemId: iaf_ext_files_coll._id,
-                query: {
-                    "fileAttributes.drawingDiscipline": type,
-                    "fileAttributes.trackedDrawing": "Yes"
-                },
-                options: { page: { _pageSize: 0, getPageInfo: true } }
-            }
-        })
-        console.log('distinctTypes', distinctTypes)
-
-        let typesPageInfo = await PlatformApi.IafScriptEngine.getItemsMulti(distinctTypeWithTypeCountQuery, ctx);
-        console.log('typesPageInfo', typesPageInfo)
-
-        let distinctTypesWithPageInfo = _.zip(distinctTypes, typesPageInfo)
-        console.log('distinctTypesWithPageInfo', distinctTypesWithPageInfo)
-
-        let distinctTypesWithChildrenCount = distinctTypesWithPageInfo.map(typeWithpage => {
-            return {
-                name: typeWithpage[0],
-                childCount: typeWithpage[1]._total
-            }
-        })
-        console.log('distinctTypesWithChildrenCount', distinctTypesWithChildrenCount)
-        return distinctTypesWithChildrenCount
-    },
-    async getDwgSubTypesForDwgDisciplineTrackedWithCount(input, libraries, callback, ctx) {
-        console.log("input - getDwgSubTypesForDwgDisciplineTrackedWithCount", input)
-        let { PlatformApi } = libraries
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
-        console.log("iaf_ext_files_coll", iaf_ext_files_coll)
-        let distinctTypes = await PlatformApi.IafScriptEngine.getDistinct({
-            collectionDesc: {
-                _userType: iaf_ext_files_coll._userType,
-                _id: iaf_ext_files_coll._id
-            },
-            field: "fileAttributes.drawingSubType",
-            query: {
-                "fileAttributes.drawingDiscipline": input.input["Drawing Discipline"],
-                "fileAttributes.trackedDrawing": "Yes"
-            }
-        }, ctx)
-        console.log('distinctTypes', distinctTypes)
-
-        distinctTypes = _.sortBy(distinctTypes, d => d)
-        console.log(distinctTypes, "distinctTypesAfter sorting")
-
-        // Need to check the objects
-        console.log(input.input)
-        let distinctTypeWithTypeCountQuery = distinctTypes.map(type => {
-            return {
-                _userItemId: iaf_ext_files_coll._id,
-                query: {
-                    "fileAttributes.drawingDiscipline": Object.values(input.input)[0],
-                    "fileAttributes.drawingSubType": type,
-                    "fileAttributes.trackedDrawing": "Yes"
-                },
-                options: { page: { _pageSize: 0, getPageInfo: true } }
-            }
-        })
-        console.log(distinctTypeWithTypeCountQuery, Object.values(input.input)[0], "distinctTypeWithTypeCountQuery")
-        console.log('distinctTypes', distinctTypes)
-
-        let typesPageInfo = await PlatformApi.IafScriptEngine.getItemsMulti(distinctTypeWithTypeCountQuery, ctx);
-        console.log('typesPageInfo', typesPageInfo)
-
-        let distinctTypesWithPageInfo = _.zip(distinctTypes, typesPageInfo)
-        console.log('distinctTypesWithPageInfo', distinctTypesWithPageInfo)
-
-        let distinctTypesWithChildrenCount = distinctTypesWithPageInfo.map(typeWithpage => {
-            return {
-                name: typeWithpage[0] == "" ? "Unknown" : typeWithpage[0],
-                childCount: typeWithpage[1]._total
-            }
-        })
-        console.log('distinctTypesWithChildrenCount', distinctTypesWithChildrenCount)
-        return distinctTypesWithChildrenCount
-    }
 }
+
 export default files
