@@ -110,7 +110,7 @@ let files = {
     async getComments(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Comment: iaf_ext_fileAttributes.Comment }
+        let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
         return scriptValues
     },
     async getOriginator(input, libraries, ctx) {
