@@ -597,6 +597,28 @@ let files = {
         console.log('fileAsEntities', filesAsEntities)
         return filesAsEntities
     },
+    async exportAllFileList(input, libraries, ctx) {
+        let { PlatformApi, UiUtils } = libraries
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let fileItems = await PlatformApi.IafScriptEngine.getFileItems({
+            collectionDesc:
+                { _userType: iaf_ext_files_coll._userType, _userItemId: iaf_ext_files_coll._userItemId },
+            options: { page: { getAllItems: true } }
+        })
+        console.log("FileItems", fileItems)
+
+        let arrayObject = _.map(fileItems, x => {
+            return Object.assign({ Name: x.name }, x.fileAttributes)
+        })
+
+        console.log("Array Object", arrayObject);
+
+        let sheetArrays = [{ sheetName: "Assets", objects: arrayObject }]
+        console.log("sheetArrays", sheetArrays)
+        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "DTU_AllFileList_Exported.xlsx");
+        return savedWorkbook
+    },
 }
 
 export default files
