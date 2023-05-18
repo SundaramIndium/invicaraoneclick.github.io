@@ -616,7 +616,7 @@ let files = {
         let sheetArrays = [{ sheetName: "Assets", objects: arrayObject }]
         console.log("sheetArrays", sheetArrays)
         let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "DTU_AllFileList_Exported.xlsx");
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "FileListsAll_Exported.xlsx");
         return savedWorkbook
     },
 }
