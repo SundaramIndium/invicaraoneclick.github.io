@@ -25,7 +25,7 @@ let files = {
         let props = []
 
         for (var i = 0; i < attributeKeys.length; i++) {
-            props.push({ prop: _.camelCase(attributeKeys[i].key), dName: attributeKeys[i].key });
+            props.push({ prop: attributeKeys[i].key, dName: attributeKeys[i].key });
         }
  console.log(props, "props")
         PlatformApi.IafScriptEngine.setVar('iaf_attributeDisplayNames', props)
