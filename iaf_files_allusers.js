@@ -116,6 +116,7 @@ let files = {
     async getComments(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        console.log(iaf_ext_fileAttributes, "iaf_ext_fileAttributes")
         let scriptValues = { "Comments": iaf_ext_fileAttributes.comments }
         return scriptValues
     },
