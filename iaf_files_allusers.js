@@ -117,32 +117,32 @@ let files = {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
         console.log(iaf_ext_fileAttributes, "iaf_ext_fileAttributes")
-        let scriptValues = { "Comments": iaf_ext_fileAttributes.Comments }
+        let scriptValues = { "Comments": iaf_ext_fileAttributes.comments }
         return scriptValues
     },
     async getOriginator(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Originator": iaf_ext_fileAttributes.Originator }
+        let scriptValues = { "Originator": iaf_ext_fileAttributes.originator }
         return scriptValues
     },
 
     async getLevelsAndLocations(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes["Levels And Locations"] }
+        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes.levelsAndLocations }
         return scriptValues
     },
     async getDocumentType(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Document Type": iaf_ext_fileAttributes["Document Type"] }
+        let scriptValues = { "Document Type": iaf_ext_fileAttributes.documentType }
         return scriptValues
     },
     async getFileDiscipline(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "File Discipline": iaf_ext_fileAttributes["File Discipline"] }
+        let scriptValues = { "File Discipline": iaf_ext_fileAttributes.fileDiscipline }
         return scriptValues
     },
     async getManufacturers(input, libraries, ctx) {
