@@ -117,13 +117,13 @@ let files = {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
         console.log(iaf_ext_fileAttributes, "iaf_ext_fileAttributes")
-        let scriptValues = { "Comments": iaf_ext_fileAttributes.Comments }
+        let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
         return scriptValues
     },
     async getOriginator(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Originator": iaf_ext_fileAttributes.Originator }
+        let scriptValues = { Originator: iaf_ext_fileAttributes.Originator }
         return scriptValues
     },
 
