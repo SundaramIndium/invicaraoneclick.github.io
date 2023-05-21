@@ -117,32 +117,32 @@ let files = {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
         console.log(iaf_ext_fileAttributes, "iaf_ext_fileAttributes")
-        let scriptValues = { "Comments": iaf_ext_fileAttributes.comments }
+        let scriptValues = { "Comments": iaf_ext_fileAttributes.Comments }
         return scriptValues
     },
     async getOriginator(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Originator": iaf_ext_fileAttributes.originator }
+        let scriptValues = { "Originator": iaf_ext_fileAttributes.Originator }
         return scriptValues
     },
 
     async getLevelsAndLocations(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes.levelsAndLocations }
+        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes["Levels And Locations"] }
         return scriptValues
     },
     async getDocumentType(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Document Type": iaf_ext_fileAttributes.documentType }
+        let scriptValues = { "Document Type": iaf_ext_fileAttributes["Document Type"] }
         return scriptValues
     },
     async getFileDiscipline(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "File Discipline": iaf_ext_fileAttributes.fileDiscipline }
+        let scriptValues = { "File Discipline": iaf_ext_fileAttributes["File Discipline"] }
         return scriptValues
     },
     async getManufacturers(input, libraries, ctx) {
