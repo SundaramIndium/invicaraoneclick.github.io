@@ -107,40 +107,41 @@ let files = {
         console.log('fileAsEntities', filesAsEntities)
         return filesAsEntities
     },
+    // async getComments(input, libraries, ctx) {
+    //     let { PlatformApi } = libraries
+    //     let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+    //     let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
+    //     return scriptValues
+    // },
     async getComments(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
+        let scriptValues = { "Comments": iaf_ext_fileAttributes.comments }
         return scriptValues
     },
     async getOriginator(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Originator: iaf_ext_fileAttributes.Originator }
+        let scriptValues = { "Originator": iaf_ext_fileAttributes.originator }
         return scriptValues
     },
-    async getBuildings(input, libraries, ctx) {
-        let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Building: iaf_ext_fileAttributes.Building }
-        return scriptValues
-    },
+
     async getLevelsAndLocations(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { 'Levels And Locations': iaf_ext_fileAttributes['Levels And Locations'] }
+        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes.levelsAndLocations }
         return scriptValues
     },
     async getDocumentType(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { 'Document Type': iaf_ext_fileAttributes['Document Type'] }
+        let scriptValues = { "Document Type": iaf_ext_fileAttributes.documentType }
         return scriptValues
     },
     async getFileDiscipline(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { 'File Discipline': iaf_ext_fileAttributes['File Discipline'] }
+        let scriptValues = { "File Discipline": iaf_ext_fileAttributes.fileDiscipline }
         return scriptValues
     },
     async getManufacturers(input, libraries, ctx) {
@@ -616,7 +617,7 @@ let files = {
         let sheetArrays = [{ sheetName: "Assets", objects: arrayObject }]
         console.log("sheetArrays", sheetArrays)
         let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "FileListsAll_Exported.xlsx");
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "DTU_AllFileList_Exported.xlsx");
         return savedWorkbook
     },
 }
