@@ -130,7 +130,7 @@ let files = {
     async getLevelsAndLocations(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes["Levels and Locations"] }
+        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes["Levels And Locations"] }
         return scriptValues
     },
     async getDocumentType(input, libraries, ctx) {
