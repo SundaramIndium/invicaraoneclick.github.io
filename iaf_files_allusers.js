@@ -144,27 +144,98 @@ let files = {
 
     async getOriginator(input, libraries, ctx) {
         let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { Originator: iaf_ext_fileAttributes.Originator }
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let distinctOriginators = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: {
+                _userType: iaf_ext_files_coll._userType,
+                _id: iaf_ext_files_coll._id
+            },
+            field: "fileAttributes.Originator",
+            query: {}
+        }, ctx)
+
+        console.log(distinctOriginators, "distinctOriginators")
+        distinctOriginators = distinctOriginators.filter(attval => attval != "")
+
+        distinctOriginators = _.sortBy(distinctOriginators, a => a)
+
+        let scriptValues = { Originator: distinctOriginators }
         return scriptValues
     },
 
     async getLevelsAndLocations(input, libraries, ctx) {
+        // let { PlatformApi } = libraries
+        // let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        // let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes["Levels And Locations"] }
+        // return scriptValues
+
         let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Levels And Locations": iaf_ext_fileAttributes["Levels And Locations"] }
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let distinctLevelsAndLocation = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: {
+                _userType: iaf_ext_files_coll._userType,
+                _id: iaf_ext_files_coll._id
+            },
+            field: "fileAttributes.Levels And Locations",
+            query: {}
+        }, ctx)
+
+        console.log(distinctLevelsAndLocation, "distinctLevelsAndLocation")
+        distinctLevelsAndLocation = distinctLevelsAndLocation.filter(attval => attval != "")
+
+        distinctLevelsAndLocation = _.sortBy(distinctLevelsAndLocation, a => a)
+
+        let scriptValues = { "Levels And Locations": distinctLevelsAndLocation }
         return scriptValues
     },
     async getDocumentType(input, libraries, ctx) {
+        // let { PlatformApi } = libraries
+        // let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        // let scriptValues = { "Document Type": iaf_ext_fileAttributes["Document Type"] }
+        // return scriptValues
+
         let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "Document Type": iaf_ext_fileAttributes["Document Type"] }
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let distinctDocType = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: {
+                _userType: iaf_ext_files_coll._userType,
+                _id: iaf_ext_files_coll._id
+            },
+            field: "fileAttributes.Document Type",
+            query: {}
+        }, ctx)
+
+        console.log(distinctDocType, "distinctDocType")
+        distinctDocType = distinctDocType.filter(attval => attval != "")
+
+        distinctDocType = _.sortBy(distinctDocType, a => a)
+
+        let scriptValues = { "Document Type": distinctDocType }
         return scriptValues
     },
     async getFileDiscipline(input, libraries, ctx) {
+        // let { PlatformApi } = libraries
+        // let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+        // let scriptValues = { "File Discipline": iaf_ext_fileAttributes["File Discipline"] }
+        // return scriptValues
+
         let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        let scriptValues = { "File Discipline": iaf_ext_fileAttributes["File Discipline"] }
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let distinctFileDiscipline = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: {
+                _userType: iaf_ext_files_coll._userType,
+                _id: iaf_ext_files_coll._id
+            },
+            field: "fileAttributes.File Discipline",
+            query: {}
+        }, ctx)
+
+        console.log(distinctFileDiscipline, "distinctFileDiscipline")
+        distinctFileDiscipline = distinctFileDiscipline.filter(attval => attval != "")
+
+        distinctFileDiscipline = _.sortBy(distinctFileDiscipline, a => a)
+
+        let scriptValues = { "File Discipline": distinctFileDiscipline }
         return scriptValues
     },
     async getManufacturers(input, libraries, ctx) {
