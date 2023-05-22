@@ -155,7 +155,7 @@ let files = {
         }, ctx)
 
         console.log(distinctOriginators, "distinctOriginators")
-        distinctOriginators = distinctOriginators.filter(attval => attval != "")
+        distinctOriginators = distinctOriginators.filter(attval => attval == "")
 
         distinctOriginators = _.sortBy(distinctOriginators, a => a)
 
