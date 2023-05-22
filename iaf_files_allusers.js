@@ -27,7 +27,7 @@ let files = {
         for (var i = 0; i < attributeKeys.length; i++) {
             props.push({ prop: attributeKeys[i].key, dName: attributeKeys[i].key });
         }
- console.log(props, "props")
+        console.log(props, "props")
         PlatformApi.IafScriptEngine.setVar('iaf_attributeDisplayNames', props)
     },
     async getFileAttributeSelects(input, libraries, ctx) {
@@ -113,13 +113,35 @@ let files = {
     //     let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
     //     return scriptValues
     // },
+    // async getComments(input, libraries, ctx) {
+    //     let { PlatformApi } = libraries
+    //     let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
+    //     console.log(iaf_ext_fileAttributes, "iaf_ext_fileAttributes")
+    //     let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
+    //     return scriptValues
+    // },
+
     async getComments(input, libraries, ctx) {
         let { PlatformApi } = libraries
-        let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
-        console.log(iaf_ext_fileAttributes, "iaf_ext_fileAttributes")
-        let scriptValues = { Comments: iaf_ext_fileAttributes.Comments }
+        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let distinctComments = await PlatformApi.IafScriptEngine.getDistinct({
+            collectionDesc: {
+                _userType: iaf_ext_files_coll._userType,
+                _id: iaf_ext_files_coll._id
+            },
+            field: "fileAttributes.Comments",
+            query: {}
+        }, ctx)
+
+        console.log(distinctComments, "distinctComments")
+        distinctComments = distinctComments.filter(attval => attval != "")
+
+        distinctComments = _.sortBy(distinctComments, a => a)
+
+        let scriptValues = { Comments: distinctComments }
         return scriptValues
     },
+
     async getOriginator(input, libraries, ctx) {
         let { PlatformApi } = libraries
         let iaf_ext_fileAttributes = await PlatformApi.IafScriptEngine.getVar('iaf_ext_fileAttributes')
@@ -618,7 +640,7 @@ let files = {
         let sheetArrays = [{ sheetName: "Assets", objects: arrayObject }]
         console.log("sheetArrays", sheetArrays)
         let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "DTU_AllFileList_Exported.xlsx");
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "AllFileList_Exported.xlsx");
         return savedWorkbook
     },
 }
