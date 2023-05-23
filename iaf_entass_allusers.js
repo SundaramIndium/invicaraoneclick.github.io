@@ -419,15 +419,18 @@ let entass = {
         }
         return tableDataWithHeader
     },
-      async exportAssets(input, libraries, ctx) {
+     async exportAssets(input, libraries, ctx) {
+        debugger
         let { UiUtils } = libraries
         console.log("input export Assets", input)
         let assetRows = input.entityInfo.original.map(asset => {
             return {
-                "Asset Name": asset['Entity Name'],
-                "Revit Family": asset.properties['Revit Family'].val,
-                "Revit Type": asset.properties['Revit Type'].val,
-                "Containing Space Number": asset.properties['Containing Space Number'].val,
+                // "Asset Name": asset['Entity Name'],
+                // "Revit Family": asset.properties['Revit Family'].val,
+                // "Revit Type": asset.properties['Revit Type'].val,
+                // "Containing Space Number": asset.properties['Containing Space Number'].val,
+                ...asset,
+                [asset.properties]: asset.properties.val
             }
         })
         console.log(assetRows, "assetRows")
