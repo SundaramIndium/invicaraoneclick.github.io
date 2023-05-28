@@ -404,7 +404,7 @@ let entass = {
         console.log("input export Assets", input)
         let assetRows = input.entityInfo.original.map(asset => {
             return {
-                // "Asset Name": asset['Entity Name'],
+                 "Asset Name": asset['Entity Name'],
                 // "Revit Family": asset.properties['Revit Family'].val,
                 // "Revit Type": asset.properties['Revit Type'].val,
                 // "Containing Space Number": asset.properties['Containing Space Number'].val,
