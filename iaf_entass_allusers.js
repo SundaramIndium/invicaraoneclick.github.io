@@ -56,27 +56,6 @@ let entass = {
         console.log('hydratedObject', hydratedObject)
         return hydratedObject
     },
-    // this one is not working need to ask scott
-    async exportAssets(input, libraries, ctx) {
-        let { UiUtils } = libraries
-        let assetRows = input.entityInfo.original.map(asset => {
-            return {
-                "Asset Name": asset['Entity Name'],
-                "Revit Element ID": asset.properties['Revit Element ID.val'],
-                "Volume": asset.properties['Volume.val'],
-                "Volume Unit": "m^3",
-                "Task ID": asset.properties['Task ID.val'],
-                "Grade": asset.properties['Grade.val']
-            }
-        })
-        let sheetArrays = [{ sheetName: "Exported Assets", objects: assetRows }]
-        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays);
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook({
-            workbook: relationWorkbook,
-            file: "Exported_Assets.xlsx"
-        });
-        return savedWorkbook
-    },
     async getAssets(input, libraries, ctx, callback) {
         console.log('input', input)
         const { IafScriptEngine } = libraries.PlatformApi
