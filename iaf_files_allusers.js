@@ -65,9 +65,7 @@ let files = {
         distinctFileTypes = _.sortBy(distinctFileTypes, a => a)
         console.log('distinctFileTypes3', distinctFileTypes)
         let scriptedSelectProps = {
-            Originator: distinctOriginators,
-            "Levels And Locations": distinctLevels,
-            "File Type": distinctFileTypes
+            Originator: distinctOriginators
         }
         return scriptedSelectProps
     },
