@@ -398,28 +398,21 @@ let entass = {
         }
         return tableDataWithHeader
     },
-     async exportAssets(input, libraries, ctx) {
-        debugger
+      async exportAssets(input, libraries, ctx) {
+
         let { UiUtils } = libraries
         console.log("input export Assets", input)
-        let assetRows = input.entityInfo.original.map(asset => {
-            return {
-                 "Asset Name": asset['Entity Name'],
-                // "Revit Family": asset.properties['Revit Family'].val,
-                // "Revit Type": asset.properties['Revit Type'].val,
-                // "Containing Space Number": asset.properties['Containing Space Number'].val,
-                ...asset,
-                [asset.properties]: asset.properties.val
-            }
+
+        let arrayObject = _.map(input.entityInfo.original, x => {
+            return Object.assign({ Name: x.name }, x.properties)
         })
-        console.log(assetRows, "assetRows")
-        let sheetArrays = [{ sheetName: "Exported Assets", objects: assetRows }]
 
-        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays);
+        console.log("Array Object", arrayObject);
 
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "devConfig_Exported_Assets.xlsx");
-        console.log('savedWorkbook', savedWorkbook)
-
+        let sheetArrays = [{ sheetName: "Assets", objects: arrayObject }]
+        console.log("sheetArrays", sheetArrays)
+        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "AllAssets_Exported.xlsx");
         return savedWorkbook
     },
     async getAssetIronmongeryData(input, libraries, ctx, callback) {
