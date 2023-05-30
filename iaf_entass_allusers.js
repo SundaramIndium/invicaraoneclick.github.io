@@ -404,7 +404,7 @@ let entass = {
         console.log("input export Assets", input)
 
         let arrayObject = _.map(input.entityInfo.original, x => {
-            return Object.assign({ Name: x.name }, x.properties)
+            return Object.assign({ Name: x['Entity Name'] }, x.properties.val)
         })
 
         console.log("Array Object", arrayObject);
