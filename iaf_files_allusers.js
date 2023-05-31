@@ -255,12 +255,11 @@ let files = {
         console.log("assets", assets)
         let assetForTheFile
         let finalAssetForTheFile
-        let header = [["Asset Name", "Mark", "Room Number"]]
+        let header = [["Asset Name", "Mark"]]
         if (assets.length > 0) {
             assetForTheFile = assets.map(asset => [
                 asset['Asset Name'],
-                asset.properties.Mark.val,
-                asset.properties["Room Number"].val
+                asset.properties.Mark.val
             ])
             finalAssetForTheFile = header.concat(assetForTheFile)
         } else {
