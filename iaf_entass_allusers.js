@@ -457,21 +457,24 @@ let entass = {
         }
         return tableDataWithHeader
     },
-      async exportAssets(input, libraries, ctx) {
-
+       async exportAssets(input, libraries, ctx) {
         let { UiUtils } = libraries
-        console.log("input export Assets", input)
 
-        let arrayObject = _.map(input.entityInfo.original, x => {
-            return Object.assign({ Name: x['Entity Name'] }, x.properties.map(x => x))
-        })
+        let newObj = {};
 
-        console.log("Array Object", arrayObject);
+        console.log(input.entityInfo.original[0]["Asset Name"])
 
-        let sheetArrays = [{ sheetName: "Assets", objects: arrayObject }]
-        console.log("sheetArrays", sheetArrays)
-        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays)
-        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "AllAssets_Exported.xlsx");
+        for (var i in input.entityInfo.original[0].properties) {
+
+            newObj[i] = input.entityInfo.original[0].properties[i].val == undefined ? "" : input.entityInfo.original[0].properties[i].val;
+
+        }
+
+        let sheetArrays = [{ sheetName: "Exported Assets", objects: [Object.assign({ "Asset Name": input.entityInfo.original[0]["Asset Name"] }, newObj)] }]
+        console.log(sheetArrays, "sheetArrays")
+        let relationWorkbook = await UiUtils.IafDataPlugin.createWorkbookFromAoO(sheetArrays);
+        let savedWorkbook = await UiUtils.IafDataPlugin.saveWorkbook(relationWorkbook, "Exported_Assets.xlsx");
+
         return savedWorkbook
     },
     async getAssetIronmongeryData(input, libraries, ctx, callback) {
