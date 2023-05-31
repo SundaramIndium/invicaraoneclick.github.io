@@ -467,12 +467,11 @@ let files = {
         console.log("spaces", spaces)
         let spaceForTheFile
         let finalSpaceForTheFile
-        let header = [["Space Name", "Level", "Name"]]
+        let header = [["Space Name", "Level"]]
         if (spaces.length > 0) {
             spaceForTheFile = spaces.map(space => [
                 space['Space Name'],
-                space.properties.Floor.val,
-                space.properties.name.val
+                space.properties.Floor.val
             ])
             finalSpaceForTheFile = header.concat(spaceForTheFile)
         } else {
