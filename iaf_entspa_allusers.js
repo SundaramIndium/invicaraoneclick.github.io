@@ -14,7 +14,7 @@ let entspa = {
             query: {}
         }, ctx)
         distinctTypes = _.sortBy(distinctTypes, d => d._name)
-        return { Floor: distinctFloors, Type: distinctTypes }
+        return { Level: distinctFloors, Type: distinctTypes }
     },
     async getSpaces(input, libraries, ctx, callback) {
         console.log('input', input)
