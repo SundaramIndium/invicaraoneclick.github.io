@@ -264,6 +264,38 @@ let entspa = {
         }
         return space
     },
+    
+    async getNamesWithCount(input, libraries, ctx) {
+		let { PlatformApi } = libraries
+		let iaf_space_collection = await PlatformApi.IafScriptEngine.getVar('iaf_space_collection')
+		let countQuery = {
+			$distinctRelatedItemFields: {
+			collectionDesc: { _userItemId: iaf_space_collection._userItemId},
+			collectionProject: {_id: 1, _userItemId: 1},
+			fieldDesc: [
+				{
+					field: "properties.Name.val",
+					count: true
+				}
+			]
+			}
+		} 
+		console.log("countQuery", countQuery)
+		let distinctNames = await PlatformApi.IafItemSvc.searchRelatedItems(countQuery, ctx)
+		console.log("distinctNames", distinctNames)
+		// response handling is based on using item service query directly, when we change to script engine, response path should be changed.
+		distinctNames = distinctNames._list[0]._versions[0]._relatedItems['properties.Name.val']
+		console.log("distinctNames", distinctNames)
+		let sortedDistinctNames = _.sortBy(distinctNames, name => name.value)
+		console.log("sortedDistinctNames", sortedDistinctNames)
+		let distinctNamesWithTypeCount = sortedDistinctNames.map(name => {
+			return {
+			name: name.value,
+			childCount: name.count
+			}
+		})
+		return distinctNamesWithTypeCount
+	  }
 }
 
 export default entspa
