@@ -264,7 +264,64 @@ let entspa = {
         }
         return space
     },
-    
+      async getAssetsForSpace(input, libraries, ctx) {
+        console.log(input, "input-inside")
+        let { PlatformApi } = libraries;
+        let tableDataWithHeader = {}
+        let iaf_asset_collection = PlatformApi.IafScriptEngine.getVar('iaf_asset_collection')
+        let iaf_space_collection = PlatformApi.IafScriptEngine.getVar('iaf_space_collection')
+        let data_query = {
+            query:
+            {
+                parent: {
+                    query: { _id: input.entityInfo._id },
+                    collectionDesc: {
+                        _userType: iaf_space_collection._userType,
+                        _userItemId: iaf_space_collection._userItemId
+                    },
+                    options: {
+                        page: { getAllItems: true },
+                        project: { _id: 1 }
+                    }
+                },
+                related: [
+                    {
+                        relatedDesc: { _relatedUserType: iaf_asset_collection._userType },
+                        as: "extendedData",
+                        options: {
+                            project: { properties: 1 }
+                        }
+                    }
+                ]
+            }
+        }
+        console.log(data_query, "data_query")
+        let asset_extended_data = await PlatformApi.IafScriptEngine.findWithRelated(data_query.query, ctx)
+        console.log(asset_extended_data, "asset_extended_data")
+        let assetExtendedData = asset_extended_data._list[0].extendedData._list
+        console.log(assetExtendedData, "assetExtendedData")
+        if (assetExtendedData.length > 0) {
+            let propsForTable = Object.values(assetExtendedData[0].properties)
+            console.log('propsForTable', propsForTable)
+            let sortedPropsForTable = _.sortBy(propsForTable, prop => prop.dName)
+            console.log('sortedPropsForTable', sortedPropsForTable)
+
+            let header = [['', '', '']]
+            let tableData = sortedPropsForTable.map(prop => {
+                return [
+                    prop.dName,
+                    prop.uom ? prop.uom : [],
+                    prop.val
+                ]
+            })
+            console.log('tableData', tableData)
+            tableDataWithHeader = header.concat(tableData)
+            console.log('tableDataWithHeader', tableDataWithHeader)
+        } else {
+            tableDataWithHeader = []
+        }
+        return tableDataWithHeader
+    },
     async getNamesWithCount(input, libraries, ctx) {
 		let { PlatformApi } = libraries
 		let iaf_space_collection = await PlatformApi.IafScriptEngine.getVar('iaf_space_collection')
