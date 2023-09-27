@@ -410,11 +410,12 @@ let collect = {
         }
         return related
     },
-    async editCollection(input, libraries, ctx) {
+     async editCollection(input, libraries, ctx) {
         let { PlatformApi } = libraries
+        console.log("input edit collections", input)
         let iaf_collections = await PlatformApi.IafScriptEngine.getVar('iaf_collections')
-        let iaf_asset_collection = await PlatformApi.IafScriptEngine.getVar('iaf_asset_collection')
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        console.log("iaf_collections", iaf_collections)
+        let IAF_workspace = await PlatformApi.IafScriptEngine.getVar('IAF_workspace')
 
         let res = {
             success: true,
@@ -425,9 +426,11 @@ let collect = {
             "Collection Name": input.entityInfo.new['Entity Name'],
             properties: input.entityInfo.new.properties
         }
+        let findColl
         let updatedCollArray = [minCollInfo]
-        if (input.entityInfo.new['Entity Name'] && input.entityInfo.new.Type) {
-            let findcoll = await PlatformApi.IafScriptEngine.findInCollections({
+        console.log("updatedCollArray", updatedCollArray)
+        if (input.entityInfo.new['Entity Name'] && input.entityInfo.new.properties.Type) {
+            findColl = await PlatformApi.IafScriptEngine.findInCollections({
                 query: { "Collection Name": input.entityInfo.new['Entity Name'], "properties.Type.val": input.entityInfo.new.properties.Type.val },
                 collectionDesc: {
                     _userType: iaf_collections._userType,
@@ -436,8 +439,9 @@ let collect = {
                 options: { page: { _pageSize: 10, getPageInfo: true } }
             }, ctx)
             let updateOK
-            if (findcoll._total > 0) {
-                if (findcoll._list[0]._id == input.entityInfo.new._id) {
+            console.log("findColl", findColl)
+            if (findColl._total > 0) {
+                if (findColl._list[0]._id == input.entityInfo.new._id) {
                     updateOK = true
                 } else {
                     updateOK = false
@@ -451,13 +455,17 @@ let collect = {
                     "Collection Name": input.entityInfo.new['Entity Name'],
                     properties: input.entityInfo.new.properties
                 }]
+                console.log("updatedItemArray", updatedItemArray)
                 let updateItemResult = await PlatformApi.IafScriptEngine.updateItemsBulk({
                     _userItemId: iaf_collections._userItemId,
                     _namespaces: IAF_workspace._namespaces,
                     items: updatedItemArray
                 }, ctx);
+                console.log("updateItemResult", updateItemResult)
                 let updateRes = updateItemResult[0][0]
+                console.log("updateRes", updateRes)
                 if (updateRes === 'ok: 204') {
+                    console.log("loop executed")
                     res.success = true
                     res.result = updateRes
                 } else {
@@ -475,7 +483,7 @@ let collect = {
 
         }
 
-        return related
+        return res
     },
     async deleteCollections(input, libraries, ctx) {
         let { PlatformApi } = libraries
