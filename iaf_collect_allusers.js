@@ -347,10 +347,11 @@ let collect = {
         console.log('queryResult', queryResult)
         return queryResult._list[0].Assets._list
     },
-    async getDocumentsForCollectionExtendedData(input, libraries, ctx) {
+     async getAssetsForCollectionExtendedData(input, libraries, ctx) {
         let { PlatformApi } = libraries
+        console.log("input-getAssetsForCollectionExtendedData", input)
         let iaf_collections = await PlatformApi.IafScriptEngine.getVar('iaf_collections')
-        let iaf_ext_files_coll = await PlatformApi.IafScriptEngine.getVar('iaf_ext_files_coll')
+        let iaf_asset_collection = PlatformApi.IafScriptEngine.getVar('iaf_asset_collection')
         let assetQuery = {
             query: {
                 parent: {
@@ -360,16 +361,17 @@ let collect = {
                 },
                 related: [
                     {
-                        relatedDesc: { _relatedUserType: iaf_ext_files_coll._userType },
+                        relatedDesc: { _relatedUserType: iaf_asset_collection._userType },
                         options: { page: { getAllItems: true } },
-                        as: 'Documents'
+                        as: 'Assets'
                     }
                 ]
             }
         }
+        console.log("assetQuery-getAssetsForCollectionExtendedData", assetQuery)
         let queryResult = await PlatformApi.IafScriptEngine.findWithRelated(assetQuery.query, ctx);
-        console.log('queryResult', queryResult)
-        return queryResult._list[0].Documents._list
+        console.log('queryResult AssetCollection', queryResult)
+        return queryResult._list[0].Assets._list
     },
     async getCollectionRelatedEntities(input, libraries, ctx) {
         let { PlatformApi } = libraries
