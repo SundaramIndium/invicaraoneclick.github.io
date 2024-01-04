@@ -56,22 +56,34 @@ let entass = {
         console.log('hydratedObject', hydratedObject)
         return hydratedObject
     },
-    async getAssets(input, libraries, ctx, callback) {
+   async getAssets(input, libraries, ctx, callback) {
         console.log('input', input)
         const { IafScriptEngine } = libraries.PlatformApi
+
         let assetColl = IafScriptEngine.getVar('iaf_asset_collection')
+        console.log("assetColl", assetColl)
+
+        let currentModel = IafScriptEngine.getVar('iaf_ext_current_bim_model')
+        console.log("currentModel", currentModel)
+
+        let model_els_coll = await IafScriptEngine.getCollectionInComposite(
+            currentModel._userItemId, { _userType: "rvt_elements" },
+            ctx
+        )
+        console.log("model_els_coll", model_els_coll)
+
         let relatedQuery = {
             parent: {
                 query: input.entityInfo,
                 collectionDesc: { _userType: assetColl._userType, _userItemId: assetColl._userItemId },
-                options: { page: { getAllItems: true } }
+                options: { page: { getAllItems: true, _pageSize: 1000 } }
             },
             related: [
                 {
                     relatedDesc: {
-                        _relatedUserType: "rvt_elements",
-                        //_relatedUserItemId: elemColl._userItemId,
-                        //_relatedUserItemVersionId: elemColl._userItemVersionId
+                        //_relatedUserType: "rvt_elements",
+                        _relatedUserItemId: model_els_coll._userItemId,
+                        _relatedUserItemVersionId: model_els_coll._userItemVersionId
                     },
                     options: { project: { _id: 1, package_id: 1 } },
                     as: "revitElementIds"
@@ -91,6 +103,7 @@ let entass = {
             a.original = _.cloneDeep(a)
             a['Entity Name'] = a['Asset Name']
             a.modelViewerIds = a.revitElementIds._list.map(e => e.package_id)
+            a.modelData = { id: a.revitElementIds?._list?.[0]?.package_id }
             return a
         })
 
